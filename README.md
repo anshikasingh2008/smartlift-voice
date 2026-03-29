@@ -121,6 +121,7 @@ cd smartlift-voice
 
 **Windows:**
 ```bash
+
 python -m venv venv
 venv\Scripts\activate
 ```
@@ -512,29 +513,23 @@ python run.py
 
 *(Add your actual screenshots here)*
 
-### Project Structure in VS Code
-![Project Structure](screenshots/project_structure.png)
 
 ### Web Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](<img width="1909" height="958" alt="dashboard" src="https://github.com/user-attachments/assets/54104c17-ea73-4931-89ee-4855033ac9d2" />)
 
-### Voice Command Processing
-![Voice Command](screenshots/voice_command.png)
 
 ### Command History
-![Command History](screenshots/logs.png)
-
-### Installation Success
-![Installation](screenshots/installation.png)
+![Command History](<img width="1783" height="526" alt="command_history" src="https://github.com/user-attachments/assets/6ad61e66-4407-47c8-ad89-73f7e0d90e76" />)
 
 ### System Running
-![System Running](screenshots/system_running.png)
+![System Running](<img width="780" height="651" alt="smart_running" src="https://github.com/user-attachments/assets/7e63e42c-8bb1-439a-ad4a-ba0e1c705f41" />)
 
 ---
 
 ## 🎯 Final Notes
 
 SmartLift Voice demonstrates how Artificial Intelligence and Machine Learning can solve real-world accessibility problems. The system is:
+<img width="780" height="651" alt="smart_running" src="https://github.com/user-attachments/assets/01922f1f-88fd-4bb1-87dd-7641137017a8" />
 
 - ✅ **Inclusive** - Works for all users regardless of physical ability
 - ✅ **Practical** - Can be deployed in existing buildings
