@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SmartLift Voice - AI Elevator Control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header h1 span {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #4CAF50;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .card h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Status Items */
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .status-value {
+            color: #333;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* Floor Indicator */
+        .floor-indicator {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .floor-number {
+            font-size: 5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-shadow: 2px 2px 10px rgba(102,126,234,0.3);
+        }
+
+        .floor-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        /* Command Input */
+        .command-input {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .command-input input {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .command-input input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102,126,234,0.3);
+        }
+
+        .command-input button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .command-input button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        /* Quick Buttons */
+        .quick-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .quick-btn {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .quick-btn:hover {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Emergency Button */
+        .emergency {
+            background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+            color: white;
+            border: none;
+            margin-top: 15px;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .emergency:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(255,71,87,0.5);
+            animation: pulse 0.5s ease infinite;
+        }
+
+        /* Response Box */
+        .response-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            min-height: 70px;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Logs */
+        .logs-container {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .log-entry {
+            padding: 8px;
+            border-bottom: 1px solid #2a2a3e;
+            color: #00ff9d;
+            display: flex;
+            gap: 10px;
+        }
+
+        .log-time {
+            color: #888;
+            min-width: 80px;
+        }
+
+        .log-text {
+            color: #ccc;
+        }
+
+        .log-text.success {
+            color: #00ff9d;
+        }
+
+        .log-text.error {
+            color: #ff4757;
+        }
+
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            color: #888;
+            padding: 20px;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #667eea; }
+            to { text-shadow: 0 0 20px #667eea; }
+        }
+
+        .moving {
+            animation: pulse 0.8s ease infinite;
+            color: #ff6b6b;
+        }
+
+        .glow {
+            animation: glow 1s ease infinite;
+        }
+
+        /* Scrollbar */
+        .logs-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .logs-container::-webkit-scrollbar-track {
+            background: #2a2a3e;
+            border-radius: 3px;
+        }
+
+        .logs-container::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 3px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .quick-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .floor-number {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <span>🔊 SmartLift Voice</span>
+            </h1>
+            <p>AI-Powered Voice Controlled Elevator System | Hands-Free Accessibility</p>
+            <div class="status-badge" id="systemStatus">🟢 System Online</div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid">
+            <!-- Status Card -->
+            <div class="card">
+                <h2>
+                    <span>📊</span> Elevator Status
+                </h2>
+                <div class="status-item">
+                    <span class="status-label">📍 Current Floor:</span>
+                    <span class="status-value" id="currentFloor">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">⚡ Movement Status:</span>
+                    <span class="status-value" id="movingStatus">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">🚪 Door Status:</span>
+                    <span class="status-value" id="doorStatus">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">📝 Pending Requests:</span>
+                    <span class="status-value" id="pendingRequests">--</span>
+                </div>
+                <div class="floor-indicator">
+                    <div class="floor-icon">🏢</div>
+                    <div class="floor-number" id="floorNumber">-</div>
+                    <div id="floorName" style="color: #888; margin-top: 5px;"></div>
+                </div>
+            </div>
+
+            <!-- Voice Command Card -->
+            <div class="card">
+                <h2>
+                    <span>🎤</span> Voice Command
+                </h2>
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9rem;">
+                    💡 Try saying: <strong>"Floor 5"</strong> | <strong>"Open door"</strong> | <strong>"Emergency"</strong> | <strong>"Where am I?"</strong>
+                </p>
+                <div class="command-input">
+                    <input type="text" id="commandInput" placeholder="Type a command or speak into microphone..." 
+                           onkeypress="if(event.key==='Enter') sendCommand()">
+                    <button onclick="sendCommand()">
+                        📤 Send
+                    </button>
+                </div>
+                <button onclick="startVoiceInput()" style="width: 100%; margin-top: 10px; background: #48dbfb; padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold;">
+                    🎙️ Click to Speak (Voice Input)
+                </button>
+                <button onclick="sendEmergency()" class="emergency">
+                    🚨 EMERGENCY STOP
+                </button>
+                <div id="commandResponse" class="response-box">
+                    <small>💬 Ready for commands... Speak or type your request.</small>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="card">
+                <h2>
+                    <span>⚡</span> Quick Actions
+                </h2>
+                <div class="quick-buttons">
+                    <button onclick="sendQuickCommand('ground floor')" class="quick-btn">🏠 Ground Floor (1)</button>
+                    <button onclick="sendQuickCommand('floor 2')" class="quick-btn">2️⃣ Floor 2</button>
+                    <button onclick="sendQuickCommand('floor 3')" class="quick-btn">3️⃣ Floor 3</button>
+                    <button onclick="sendQuickCommand('floor 4')" class="quick-btn">4️⃣ Floor 4</button>
+                    <button onclick="sendQuickCommand('floor 5')" class="quick-btn">5️⃣ Floor 5</button>
+                    <button onclick="sendQuickCommand('floor 6')" class="quick-btn">6️⃣ Floor 6</button>
+                    <button onclick="sendQuickCommand('floor 7')" class="quick-btn">7️⃣ Floor 7</button>
+                    <button onclick="sendQuickCommand('floor 8')" class="quick-btn">8️⃣ Floor 8</button>
+                    <button onclick="sendQuickCommand('floor 9')" class="quick-btn">9️⃣ Floor 9</button>
+                    <button onclick="sendQuickCommand('top floor')" class="quick-btn">🔟 Top Floor (10)</button>
+                    <button onclick="sendQuickCommand('open door')" class="quick-btn">🚪 Open Door</button>
+                    <button onclick="sendQuickCommand('close door')" class="quick-btn">🔒 Close Door</button>
+                    <button onclick="sendQuickCommand('where am I')" class="quick-btn">📍 Where Am I?</button>
+                    <button onclick="sendQuickCommand('cancel')" class="quick-btn">❌ Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs Card -->
+        <div class="card">
+            <h2>
+                <span>📜</span> Command History
+                <button onclick="refreshLogs()" style="float: right; background: #667eea; color: white; border: none; padding: 5px 15px; border-radius: 8px; cursor: pointer;">
+                    🔄 Refresh
+                </button>
+                <button onclick="clearLogs()" style="float: right; background: #ff4757; color: white; border: none; padding: 5px 15px; border-radius: 8px; cursor: pointer; margin-right: 10px;">
+                    🗑️ Clear
+                </button>
+            </h2>
+            <div id="logsContainer" class="logs-container">
+                <div class="loading">⏳ Loading logs...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '';
+        
+        // Floor names mapping
+        const floorNames = {
+            1: "Ground Floor",
+            2: "Second Floor", 
+            3: "Third Floor",
+            4: "Fourth Floor",
+            5: "Fifth Floor",
+            6: "Sixth Floor",
+            7: "Seventh Floor",
+            8: "Eighth Floor",
+            9: "Ninth Floor",
+            10: "Top Floor"
+        };
+        
+        // Update elevator status
+        function updateStatus() {
+            fetch(API_BASE + '/api/status')
+                .then(response => response.json())
+                .then(data => {
+                    const currentFloor = data.current_floor || 1;
+                    document.getElementById('currentFloor').innerHTML = `<strong>${currentFloor}</strong>`;
+                    document.getElementById('floorNumber').innerHTML = currentFloor;
+                    document.getElementById('floorName').innerHTML = floorNames[currentFloor] || `Floor ${currentFloor}`;
+                    
+                    const movingSpan = document.getElementById('movingStatus');
+                    if (data.is_moving) {
+                        movingSpan.innerHTML = '<span class="moving">🚀 Moving</span>';
+                    } else {
+                        movingSpan.innerHTML = '⏹️ Idle';
+                    }
+                    
+                    const doorStatus = document.getElementById('doorStatus');
+                    if (data.doors_open) {
+                        doorStatus.innerHTML = '🚪 <span style="color: #4CAF50;">Open</span>';
+                    } else {
+                        doorStatus.innerHTML = '🔒 <span style="color: #ff4757;">Closed</span>';
+                    }
+                    
+                    const pendingCount = data.pending_requests?.length || 0;
+                    document.getElementById('pendingRequests').innerHTML = pendingCount;
+                    
+                    document.getElementById('systemStatus').innerHTML = '🟢 System Online';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('systemStatus').innerHTML = '🔴 Server Offline';
+                });
+        }
+        
+        // Send command to API
+        function sendCommand() {
+            const input = document.getElementById('commandInput');
+            const command = input.value.trim();
+            if (!command) return;
+            sendToAPI(command);
+            input.value = '';
+        }
+        
+        // Send quick command
+        function sendQuickCommand(command) {
+            sendToAPI(command);
+        }
+        
+        // Voice input
+        function startVoiceInput() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                document.getElementById('commandResponse').innerHTML = '<span class="error">❌ Your browser doesn\'t support voice input. Please type your command.</span>';
+                return;
+            }
+            
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            
+            document.getElementById('commandResponse').innerHTML = '<small>🎤 Listening... Please speak your command.</small>';
+            
+            recognition.start();
+            
+            recognition.onresult = function(event) {
+                const command = event.results[0][0].transcript;
+                document.getElementById('commandInput').value = command;
+                sendToAPI(command);
+            };
+            
+            recognition.onerror = function(event) {
+                document.getElementById('commandResponse').innerHTML = '<span class="error">❌ Could not hear you. Please try again or type your command.</span>';
+            };
+        }
+        
+        // Send to API
+        function sendToAPI(command) {
+            const responseDiv = document.getElementById('commandResponse');
+            responseDiv.innerHTML = '<small>⏳ Processing command...</small>';
+            
+            fetch(API_BASE + '/api/command', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command: command })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    responseDiv.innerHTML = `<div class="success">✅ ${data.message || 'Command executed successfully!'}</div>`;
+                } else if (data.status === 'emergency') {
+                    responseDiv.innerHTML = `<div style="color: #ff4757; font-weight: bold;">🚨 ${data.message}</div>`;
+                } else {
+                    responseDiv.innerHTML = `<div class="error">❌ ${data.message || 'Error processing command'}</div>`;
+                }
+                refreshLogs();
+                updateStatus();
+                
+                setTimeout(() => {
+                    if (responseDiv.innerHTML.includes('✅') || responseDiv.innerHTML.includes('❌')) {
+                        responseDiv.innerHTML = '<small>💬 Ready for next command...</small>';
+                    }
+                }, 3000);
+            })
+            .catch(error => {
+                responseDiv.innerHTML = '<div class="error">❌ Network error. Make sure the server is running.</div>';
+            });
+        }
+        
+        // Emergency
+        function sendEmergency() {
+            if (confirm('⚠️ EMERGENCY MODE: This will stop the elevator and alert security. Continue?')) {
+                sendToAPI('emergency');
+            }
+        }
+        
+        // Refresh logs
+        function refreshLogs() {
+            fetch(API_BASE + '/api/logs')
+                .then(response => response.json())
+                .then(logs => {
+                    const container = document.getElementById('logsContainer');
+                    if (!logs || logs.length === 0) {
+                        container.innerHTML = '<div class="log-entry"><span class="log-time">--:--:--</span><span class="log-text">No logs yet. Try some commands!</span></div>';
+                        return;
+                    }
+                    
+                    container.innerHTML = logs.reverse().map(log => {
+                        const time = new Date(log.timestamp).toLocaleTimeString();
+                        let logClass = '';
+                        if (log.event_type === 'error') logClass = 'error';
+                        if (log.event_type === 'success') logClass = 'success';
+                        const logText = log.details?.command || log.command || JSON.stringify(log);
+                        return `<div class="log-entry">
+                            <span class="log-time">[${time}]</span>
+                            <span class="log-text ${logClass}">${logText.substring(0, 100)}</span>
+                        </div>`;
+                    }).join('');
+                })
+                .catch(error => {
+                    document.getElementById('logsContainer').innerHTML = '<div class="log-entry"><span class="log-text error">Error loading logs</span></div>';
+                });
+        }
+        
+        // Clear logs
+        function clearLogs() {
+            if (confirm('Clear all command history?')) {
+                fetch(API_BASE + '/api/logs/clear', { method: 'DELETE' })
+                    .then(() => refreshLogs())
+                    .catch(() => {});
+            }
+        }
+        
+        // Initial load
+        updateStatus();
+        refreshLogs();
+        
+        // Auto refresh every 2 seconds
+        setInterval(updateStatus, 2000);
+        setInterval(refreshLogs, 5000);
+        
+        // Keyboard shortcut: Ctrl+Enter to send command
+        document.getElementById('commandInput').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                sendCommand();
+            }
+        });
+    </script>
+</body>
+</html>

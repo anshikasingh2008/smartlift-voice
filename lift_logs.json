@@ -1,0 +1,8 @@
+{"timestamp": "2026-03-29T19:25:24.694868", "event_type": "system_stop", "details": {"uptime": "System stopped by user"}}
+{"timestamp": "2026-03-29T19:24:43.495068", "event_type": "system_start", "details": {"voice_enabled": true, "web_enabled": true, "timestamp": "2026-03-29T19:24:43.495061"}}
+{"timestamp": "2026-03-29T19:24:57.335705", "event_type": "floor_request", "floor": 7, "current_floor": 1}
+{"type": "web_command", "command": "floor 7", "response": {"status": "success", "message": "Floor 7 selected", "floor": 7}}
+{"type": "web_command", "command": "where am I", "response": {"status": "success", "message": "Current floor: 1", "floor": 1}}
+{"type": "web_command", "command": "where am I", "response": {"status": "success", "message": "Current floor: 1", "floor": 1}}
+{"type": "web_command", "command": "cancel", "response": {"status": "success", "message": "Request cancelled"}}
+{"timestamp": "2026-03-29T19:25:24.694868", "event_type": "system_stop", "details": {"uptime": "System stopped by user"}}

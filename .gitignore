@@ -1,0 +1,9 @@
+# .gitignore file content
+.venv/
+venv/
+__pycache__/
+*.pyc
+lift_logs.json
+screenshots/
+.DS_Store
+*.log
