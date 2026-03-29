@@ -13,7 +13,6 @@
 
 - [About the Project](#about-the-project)
 - [Features](#features)
-- [Demo](#demo)
 - [Hardware Requirements](#hardware-requirements)
 - [Software Requirements](#software-requirements)
 - [Installation](#installation)
@@ -438,7 +437,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ```
 MIT License
 
-Copyright (c) 2026 [anshikasingh2008]
+Copyright (c) 2026 anshikasingh2008
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -446,6 +445,7 @@ in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions...
+
 ```
 
 ---
@@ -456,7 +456,7 @@ furnished to do so, subject to the following conditions...
 **Course:** CSA2001 - Fundamentals in AI and ML
 **Institution:** Vellore Institute of Technology (VIT)
 **GitHub:** [https://github.com/anshikasingh2008/smartlift-voice](https://github.com/anshikasingh2008/smartlift-voice)
-**Email:** your.email@example.com
+**Email:** anshika.25bai10498@vitbhopal.ac.in
 
 ---
 
@@ -511,25 +511,23 @@ python run.py
 
 ## 📸 Screenshots
 
-*(Add your actual screenshots here)*
-
 
 ### Web Dashboard
-![Dashboard](<img width="1909" height="958" alt="dashboard" src="https://github.com/user-attachments/assets/54104c17-ea73-4931-89ee-4855033ac9d2" />)
+(<img width="1909" height="958" alt="dashboard" src="https://github.com/user-attachments/assets/54104c17-ea73-4931-89ee-4855033ac9d2" />)
 
 
 ### Command History
-![Command History](<img width="1783" height="526" alt="command_history" src="https://github.com/user-attachments/assets/6ad61e66-4407-47c8-ad89-73f7e0d90e76" />)
+(<img width="1783" height="526" alt="command_history" src="https://github.com/user-attachments/assets/6ad61e66-4407-47c8-ad89-73f7e0d90e76" />)
 
 ### System Running
-![System Running](<img width="780" height="651" alt="smart_running" src="https://github.com/user-attachments/assets/7e63e42c-8bb1-439a-ad4a-ba0e1c705f41" />)
+(<img width="780" height="651" alt="smart_running" src="https://github.com/user-attachments/assets/7e63e42c-8bb1-439a-ad4a-ba0e1c705f41" />)
 
 ---
 
 ## 🎯 Final Notes
 
 SmartLift Voice demonstrates how Artificial Intelligence and Machine Learning can solve real-world accessibility problems. The system is:
-<img width="780" height="651" alt="smart_running" src="https://github.com/user-attachments/assets/01922f1f-88fd-4bb1-87dd-7641137017a8" />
+
 
 - ✅ **Inclusive** - Works for all users regardless of physical ability
 - ✅ **Practical** - Can be deployed in existing buildings
